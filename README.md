@@ -14,7 +14,7 @@ Some of the fine books I have read
 
 ## b01-数学
 
-### 《程序员的数学》
+### [《程序员的数学》](a.md)
 
 ``` html
 【作者】：平冈和幸堀玄著
