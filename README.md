@@ -87,3 +87,11 @@ Some of the fine books I have read
 ## b07-其他
 
 ### [《史蒂夫乔布斯传》](b07-其他/史蒂夫乔布斯传.mobi)
+
+``` text
+【作者】：沃尔特·艾萨克森（Walter Isaacson）
+
+【简介】：乔布斯传记
+
+【读后感】：乔布斯的事迹和产品理念
+```
