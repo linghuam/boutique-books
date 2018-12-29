@@ -14,7 +14,7 @@ Some of the fine books I have read
 
 ## b01-数学
 
-### [《程序员的数学》](b01-数学/程序员的数学1.pdf)
+#####[《程序员的数学》](b01-数学/程序员的数学1.pdf)
 
 ``` text
 【作者】：[日]结城浩 [日]平冈和幸崛玄
@@ -26,7 +26,7 @@ Some of the fine books I have read
 
 ## b02-计算机基本理论
 
-### [《计算机网络》](b02-计算机基本理论/计算机网络-第7版-谢希仁.pdf)
+##### [《计算机网络》](b02-计算机基本理论/计算机网络-第7版-谢希仁.pdf)
 
 ``` text
 【作者】：谢希仁
@@ -38,9 +38,19 @@ Some of the fine books I have read
 
 ## b03-数据结构与算法
 
+##### [《算法图解》](b03-数据结构与算法/算法图解.pdf)
+
+``` text
+【作者】：[美] Aditya Bhargava 
+
+【简介】：图文并茂的方式讲解算法
+
+【读后感】：掌握了常用算法的优化实现思想
+```
+
 ## b04-图形学与可视化
 
-### [《HTML5 Canvas核心技术》](b04-图形学与可视化/HTML5Canvas核心技术-图形动画与游戏开发.pdf)
+##### [《HTML5 Canvas核心技术》](b04-图形学与可视化/HTML5Canvas核心技术-图形动画与游戏开发.pdf)
 
 ``` text
 【作者】：[美] David Geary
@@ -52,7 +62,7 @@ Some of the fine books I have read
 
 ## b05-HTML与CSS
 
-### [《CSS世界》](b05-HTML与CSS/CSS世界-张鑫旭.pdf)
+##### [《CSS世界》](b05-HTML与CSS/CSS世界-张鑫旭.pdf)
 
 ``` text
 【作者】：张鑫旭
@@ -62,7 +72,7 @@ Some of the fine books I have read
 【读后感】：通俗易懂，注重实践
 ```
 
-### [《CSS揭秘》](b05-HTML与CSS/CSS揭秘.pdf)
+##### [《CSS揭秘》](b05-HTML与CSS/CSS揭秘.pdf)
 
 ``` text
 【作者】：[希] Lea Verou
@@ -74,7 +84,7 @@ Some of the fine books I have read
 
 ## b06-JS与NodeJS
 
-### [《深入浅出NodeJs》](b06-JS与NodeJS/深入浅出Nodejs.pdf)
+#####[《深入浅出NodeJs》](b06-JS与NodeJS/深入浅出Nodejs.pdf)
 
 ``` text
 【作者】：朴灵
@@ -86,7 +96,7 @@ Some of the fine books I have read
 
 ## b07-其他
 
-### [《史蒂夫乔布斯传》](b07-其他/史蒂夫乔布斯传.mobi)
+##### [《史蒂夫乔布斯传》](b07-其他/史蒂夫乔布斯传.mobi)
 
 ``` text
 【作者】：沃尔特·艾萨克森（Walter Isaacson）
