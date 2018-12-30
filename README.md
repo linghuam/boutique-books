@@ -14,7 +14,7 @@ Some of the fine books I have read
 
 ## b01-数学
 
-#####[《程序员的数学》](b01-数学/程序员的数学1.pdf)
+##### [《程序员的数学》](b01-数学/程序员的数学1.pdf)
 
 ``` text
 【作者】：[日]结城浩 [日]平冈和幸崛玄
@@ -84,7 +84,7 @@ Some of the fine books I have read
 
 ## b06-JS与NodeJS
 
-#####[《深入浅出NodeJs》](b06-JS与NodeJS/深入浅出Nodejs.pdf)
+##### [《深入浅出NodeJs》](b06-JS与NodeJS/深入浅出Nodejs.pdf)
 
 ``` text
 【作者】：朴灵
@@ -93,6 +93,14 @@ Some of the fine books I have read
 
 【读后感】：NodeJS基础与原理
 ```
+
+##### [《深入理解ES6》](b06-JS与NodeJS/深入理解ES6.pdf)
+
+##### [《你不知道的JavaScript-上卷》](b06-JS与NodeJS/你不知道的JavaScript(上卷).pdf)
+
+##### [《你不知道的JavaScript-中卷》](b06-JS与NodeJS/你不知道的JavaScript(中卷).pdf)
+
+##### [《你不知道的JavaScript-下卷》](b06-JS与NodeJS/你不知道的JavaScript(下卷).pdf)
 
 ## b07-其他
 
