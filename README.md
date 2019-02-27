@@ -60,6 +60,8 @@ Some of the fine books I have read
 【读后感】：熟悉 Canvas 开发及性能优化
 ```
 
+##### [《WebGL高级编程：开发Web3D图形》](b04-图形学与可视化/WebGL高级编程：开发Web3D图形.pdf)
+
 ## b05-HTML与CSS
 
 ##### [《CSS世界》](b05-HTML与CSS/CSS世界-张鑫旭.pdf)

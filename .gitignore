@@ -11,3 +11,6 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+
+# large files (>100M)
+b04-图形学与可视化/WebGL高级编程：开发Web3D图形.pdf
