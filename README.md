@@ -48,6 +48,8 @@ Some of the fine books I have read
 【读后感】：掌握了常用算法的优化实现思想
 ```
 
+##### [《学习js数据结构与算法》](b03-数据结构与算法/学习js数据结构与算法.pdf)
+
 ## b04-图形学与可视化
 
 ##### [《HTML5 Canvas核心技术》](b04-图形学与可视化/HTML5Canvas核心技术-图形动画与游戏开发.pdf)
