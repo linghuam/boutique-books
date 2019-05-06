@@ -106,6 +106,8 @@ Some of the fine books I have read
 
 ##### [《你不知道的JavaScript-下卷》](b06-JS与NodeJS/你不知道的JavaScript(下卷).pdf)
 
+##### [《JavaScript模式》](b06-JS与NodeJS/JavaScript模式.Stoyan.Stefanov.pdf)
+
 ## b07-其他
 
 ##### [《史蒂夫乔布斯传》](b07-其他/史蒂夫乔布斯传.mobi)
