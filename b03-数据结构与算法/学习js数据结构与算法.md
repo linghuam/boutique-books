@@ -199,23 +199,101 @@ function traveseTree(node, callback) {
     }
 }
 
-// 非递归写法
+// 非递归写法（借助栈）
 function traveseTree(root, callback) {
     var stack = [];
-    var currentNode = root;
-    while(currentNode) {
-        while(currentNode.left) {
-            stack.push(currentNode.left);
-            currentNode = currentNode.left;
+    var p = root;
+    if (root == null)
+        return;
+    while(stack.length || p) {
+        // 第一步：遍历左子树，根节点入栈（为了后面根据根节点找到右子树）
+        while(p) {
+            stack.push(p);
+            p = p.left;
         }
-        callback(stack.pop());
-        callback(stack.pop());
+        // 第二步：出栈（p指向栈顶元素，取p的右子树重复以上过程，直到栈为空且p为空）
+        callback(p = stack.pop());
+        p = p.right;
     }
 }
 ```
 
 #### 先序遍历（根左右）
+
+```js
+// 递归写法
+function traveseTree(root, callback) {
+    if (root != null) {
+        callback(root);
+        traveseTree(root.left);
+        traveseTree(root.right);
+    }
+}
+
+// 非递归写法（借助栈）
+function traveseTree(root, callback) {
+    var p = root,
+        stack = [];
+    if (root == null) return;
+    while(stack.length || p) {
+        // 第一步：先遍历左子树，边遍历边打印，并将根节点存入栈中，以后借助跟节点进入右子树开启新一轮遍历
+        while(p) {
+            callback(p);
+            stack.push(p);
+            p = p.left;
+        }
+        p = stack.pop();
+        p = p.right;
+    }
+}
+```
+
 #### 后序遍历（左右根）
+
+```js
+// 递归写法
+function traveseTree(root, callback) {
+    if (root != null) {
+        traveseTree(root.left);
+        traveseTree(root.right);
+        callback(root);
+    }
+}
+
+// 非递归写法（借助栈）
+// 后序遍历的难点在于：需要判断上次访问的节点是位于左子树，还是右子树。若是位于左子树，则需跳过根节点，先进入右子树，再回头访问根节点；若是位于右子树，则直接访问根节点。
+function traveseTree(root, callback) {
+    var pCur = root, pLast = null, stack = [];
+    if (root == null) return;
+    // 先把pCur移到左子树最下边
+    while(pCur) {
+        stack.push(pCur);
+        pCur = pCur.left;
+    }
+    while(stack.length) {
+        pCur = stack.pop();
+        //一个根节点被访问的前提是：无右子树或右子树已被访问过
+        if (pCur.right == null || pCur.right == pLast) {
+            callback(pCur);
+            pLast = pCur;
+        }
+        /*这里的else语句可换成带条件的else if:
+        else if (pCur->lchild == pLastVisit)//若左子树刚被访问过，则需先进入右子树(根节点需再次入栈)
+        因为：上面的条件没通过就一定是下面的条件满足。仔细想想！
+        */
+        else {
+            // 根节点再次入栈
+            stack.push(pCur);
+            // 进入右子树，且可肯定右子树一定不为空
+            pCur = pCur.right;
+            while(pCur) {
+                stack.push(pCur);
+                pCur = pCur.left;
+            }
+        }
+    }
+}
+```
 
 ### 树的查找
 
