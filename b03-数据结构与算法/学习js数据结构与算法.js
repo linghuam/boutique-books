@@ -1,32 +1,42 @@
-function traveseTree(root, callback) {
-    var pCur = root, pLast = null, stack = [];
-    if (root == null) return;
-    // 先把pCur移到左子树最下边
-    while(pCur) {
-        stack.push(pCur);
-        pCur = pCur.left;
-    }
-    while(stack.length) {
-        pCur = stack.pop();
-        //一个根节点被访问的前提是：无右子树或右子树已被访问过
-        if (pCur.right == null || pCur.right == pLast) {
-            callback(pCur);
-            pLast = pCur;
+function removeNode(node, value) {
+    if (node == null) return null;
+    if (value < node.value) {
+        node.left = removeNode(node.left, value);
+        return node;
+    } else if (value > node.value) {
+        node.right = removeNode(node.right, value);
+        return node;
+    } else {
+        //情况1：节点为叶节点（有零个子节点的节点）
+        if(node.left == null && node.right == null) {
+            node = null;
+            return node;
         }
-        /*这里的else语句可换成带条件的else if:
-        else if (pCur->lchild == pLastVisit)//若左子树刚被访问过，则需先进入右子树(根节点需再次入栈)
-        因为：上面的条件没通过就一定是下面的条件满足。仔细想想！
-        */
-        else {
-            // 根节点再次入栈
-            stack.push(pCur);
-            // 进入右子树，且可肯定右子树一定不为空
-            pCur = pCur.right;
-            while(pCur) {
-                stack.push(pCur);
-                pCur = pCur.left;
+        //情况2：只有一个子节点的节点
+        if (node.left == null) {
+            node = node.right;
+            return node;
+        } else if(node.right == null) {
+            node = node.left;
+            return node;
+        }
+        //情况3：有两个子节点的节点
+        // 先找到右边子树节点的最小值节点
+        // 再用最小值节点的值更新当前节点的值
+        // 最后删除右边子树最小值节点
+        var findMinNode = function(node) {
+            if (node) {
+                while(node && node.left !== null) {
+                    node = node.left;
+                }
+                return node;
             }
+            return null;
         }
+        var aux = findMinNode(node.right);
+        node.value = aux.value;
+        node.right = removeNode(node.right, aux.value);
+        return node;
     }
 }
 var root = {
@@ -90,4 +100,4 @@ var root = {
         }
     }
 };
-traveseTree(root, e => {e && e.value && console.log(e.value);});
+removeNode(root, 15);

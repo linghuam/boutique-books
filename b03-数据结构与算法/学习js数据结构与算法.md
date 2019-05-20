@@ -297,4 +297,53 @@ function traveseTree(root, callback) {
 
 ### 树的查找
 
+* 最小值：左子树最下边
+* 最大值：右子树最下边
+* 特定值：先序遍历
+
 ### 树的删除
+
+```js
+// 删除值为value的节点
+function removeNode(node, value) {
+    if (node == null) return null;
+    if (value < node.value) {
+        node.left = removeNode(node.left, value);
+        return node;
+    } else if (value > node.value) {
+        node.right = removeNode(node.right, value);
+        return node;
+    } else {
+        //情况1：节点为叶节点（有零个子节点的节点）
+        if(node.left == null && node.right == null) {
+            node = null;
+            return node;
+        }
+        //情况2：只有一个子节点的节点
+        if (node.left == null) {
+            node = node.right;
+            return node;
+        } else if(node.right == null) {
+            node = node.left;
+            return node;
+        }
+        //情况3：有两个子节点的节点
+        // 先找到右边子树节点的最小值节点
+        // 再用最小值节点的值更新当前节点的值
+        // 最后删除右边子树最小值节点
+        var findMinNode = function(node) {
+            if (node) {
+                while(node && node.left !== null) {
+                    node = node.left;
+                }
+                return node;
+            }
+            return null;
+        }
+        var aux = findMinNode(node.right);
+        node.value = aux.value;
+        node.right = removeNode(node.right, aux.value);
+        return node;
+    }
+}
+```
