@@ -121,3 +121,102 @@ index+2的位置，以此类推。
 **森林(Forest)：** m(m>=0)棵互不相交的树的集合。
 
 **二叉树(BinaryTree)：** 每个结点至多只有两棵子树且左右有序。
+
+**二叉搜索树(BST)：** 左边存储比父节点小，右边存储比父节点大的二叉树。
+
+### 树的创建（BST）
+
+``` js
+function BST() {
+    function Node(value) {
+        this.value = value;
+        this.left = null;
+        this.right = null;
+        this.parent = null;
+    }
+    this.root = null;
+    this.addNode = function(value) {
+        var node = new Node(value);
+        if (this.root == null) {
+            this.root = node;
+        } else {
+            var currentNode = this.root;
+            var isContinue = true;
+            while(isContinue) {
+                if (value < currentNode.value) {
+                    if (currentNode.left) {
+                        currentNode = currentNode.left;
+                    } else {
+                        currentNode.left = node;
+                        isContinue = false;
+                    }
+                } else if (value > currentNode.value) {
+                    if (currentNode.right) {
+                        currentNode = currentNode.right;
+                    } else {
+                        currentNode.right = node;
+                        isContinue = false;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// 递归写法
+function insertNode(root, newNode) {
+    if (root === null) {
+        root = newNode;
+    } else {
+        if (newNode.value < root.value) {
+            if (root.left === null) {
+                root.left = newNode;
+            } else {
+                insertNode(root.left, newNode);
+            }
+        } else {
+            if (root.right === null) {
+                root.right = newNode;
+            } else {
+                insertNode(root.right, newNode);
+            }
+        }
+    }
+}
+```
+
+### 树的遍历
+
+#### 中序遍历（左根右）
+
+```js
+// 递归写法
+function traveseTree(node, callback) {
+    if (node !== null) {
+        traveseTree(node.left, callback);
+        callback(node);
+        traveseTree(node.right, callback);
+    }
+}
+
+// 非递归写法
+function traveseTree(root, callback) {
+    var stack = [];
+    var currentNode = root;
+    while(currentNode) {
+        while(currentNode.left) {
+            stack.push(currentNode.left);
+            currentNode = currentNode.left;
+        }
+        callback(stack.pop());
+        callback(stack.pop());
+    }
+}
+```
+
+#### 先序遍历（根左右）
+#### 后序遍历（左右根）
+
+### 树的查找
+
+### 树的删除
