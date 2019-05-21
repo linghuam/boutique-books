@@ -376,6 +376,40 @@ function removeNode(node, value) {
 
 ## 图
 
+### 图的表示
+
+* 邻接矩阵：顶点用数组索引表示，`a[i][j] = 1`来表示边。缺点是浪费一些空间。
+* 邻接表：每个顶点的相邻顶点列表组成。
+* 关联矩阵：行表示顶点，列表示边，`a[i][j] = 1`表示边j的入射顶点为i。
+
+```js
+function Graph() {
+    this.vertices = [];
+    this.vertexMap = new Map();
+    this.adjList = new Map();
+    this.addVertex = function(v) {
+        return this.vertexMap.has(v.id) ? null : (this.vertexMap.set(v.id, v),this.vertices.push(v),this.adjList.set(v.id, new Set()), v);
+    };
+    this.addEdge = function(sourceId, targetId) {
+        if (this.vertexMap.has(sourceId) && this.vertexMap.has(targetId)) {
+            this.adjList.get(sourceId).add(this.vertexMap.get(targetId));
+            this.adjList.get(targetId).add(this.vertexMap.get(sourceId));
+        }
+        return this;
+    };
+    this.toString = function() {
+        this.adjList.forEach((value, key) => {
+            console.log(key + ':' + Array.from(value).map(e => e.id).join(',') + '\n');
+        });
+    };
+}
+```
+
+### 图的遍历
+
+* 广度优先（BFS）：用**栈**实现。
+* 深度优先（DFS）：用**队列**实现
+
 ## 排序和搜索算法
 
 ## 算法补充知识
