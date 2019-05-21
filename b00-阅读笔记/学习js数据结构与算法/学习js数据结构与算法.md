@@ -295,6 +295,27 @@ function traveseTree(root, callback) {
 }
 ```
 
+#### 层次遍历（利用队列实现）
+
+1. 根节点入队
+2. 出队
+3. 如果有左孩子，左孩子入队；如果有右孩子，右孩子入队。
+4. 重复步骤2、3，直到队列为空。
+
+```js
+function traveseTree(root, callback) {
+    var queue = [];
+    if (root == null) return null;
+    queue.push(root);
+    while(queue.length) {
+        var frontNode = queue.shift();
+        callback(frontNode);
+        if (frontNode.left) queue.push(frontNode.left);
+        if (frontNode.right) queue.push(frontNode.right);
+    }
+}
+```
+
 ### 树的查找
 
 * 最小值：左子树最下边
@@ -347,3 +368,16 @@ function removeNode(node, value) {
     }
 }
 ```
+
+### 其他扩展
+
+* 红黑树
+* AVL平衡二叉搜索树
+
+## 图
+
+## 排序和搜索算法
+
+## 算法补充知识
+
+## 时间复杂度速查表
