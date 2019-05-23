@@ -388,7 +388,7 @@ function Graph() {
     this.vertexMap = new Map();
     this.adjList = new Map();
     this.addVertex = function(v) {
-        return this.vertexMap.has(v.id) ? null : (this.vertexMap.set(v.id, v),this.vertices.push(v),this.adjList.set(v.id, new Set()), v);
+        return this.vertexMap.has(v.id) ? null : (v.status = 0, this.vertexMap.set(v.id, v), this.vertices.push(v),this.adjList.set(v.id, new Set()), v);
     };
     this.addEdge = function(sourceId, targetId) {
         if (this.vertexMap.has(sourceId) && this.vertexMap.has(targetId)) {
@@ -396,6 +396,12 @@ function Graph() {
             this.adjList.get(targetId).add(this.vertexMap.get(sourceId));
         }
         return this;
+    };
+    this.getVertex = function(id) {
+        return this.vertexMap.get(id);
+    };
+    this.getVertexAdj = function(id) {
+        return this.adjList.get(id) || [];
     };
     this.toString = function() {
         this.adjList.forEach((value, key) => {
@@ -407,8 +413,50 @@ function Graph() {
 
 ### 图的遍历
 
-* 广度优先（BFS）：用**栈**实现。
-* 深度优先（DFS）：用**队列**实现
+* 广度优先（BFS）：用**队列**实现。
+* 深度优先（DFS）：用**栈**实现。
+
+用 status 表示节点状态：
+
+* 0 - 初始状态
+* 1 - 被探索状态
+* 2 - 被访问过状态
+
+```js
+// 广度优先（BFS）算法：用**队列**实现。
+/*
+1. 创建一个队列 Q
+2. 将 v 标记为 1，并入队
+3. 如果 Q 非空，重复以下步骤
+  3.1 将 u 出队
+  3.2 寻找 u 的相邻节点，并将未被访问的节点入栈，并标记为 1
+  3.3 访问节点，标记为 2
+*/
+function BFS(root, callback) {
+    var queue = [];
+    if (root == null) return null;
+    root.status = 1 && queue.push(root);
+    while(queue.length) {
+        var curVertex = queue.shift();
+        // 将相邻节点入队
+        var adjVertexs = graph.getVertexAdj(curVertex.id);
+        adjVertexs.forEach(e => {
+            // 忽略已经入队或已经被访问过的节点
+            if (e.status === 0) {
+                e.status = 1 && queue.push(e);
+            }
+        });
+        // 节点被访问
+        callback(curVertex);
+        curVertex.status = 2;
+    }
+}
+```
+
+```js
+// 深度优先（DFS）算法：用**栈**实现。
+function DFS(callback) {}
+```
 
 ## 排序和搜索算法
 
