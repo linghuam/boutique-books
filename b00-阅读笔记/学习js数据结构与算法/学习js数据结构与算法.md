@@ -455,7 +455,31 @@ function BFS(root, callback) {
 
 ```js
 // 深度优先（DFS）算法：用**栈**实现。
-function DFS(callback) {}
+function DFS(graph, callback) {
+    var stack = [];
+    var vertexs = graph.vertices;
+    // 遍历每个节点，若节点未被访问，则入栈
+    // 若栈非空，出栈
+    // 继续遍历其相邻未被访问的子节点
+    for (var i = 0, length = vertexs.length; i < length; i++) {
+        if (vertexs[i].status === 0) {
+            vertexs[i].status = 1;
+            stack.push(vertexs[i]);
+            while(stack.length) {
+                var v = stack.pop();
+                v.status = 2;
+                callback(v);
+                var adjVertexs = graph.getVertexAdj(v.id);
+                adjVertexs.forEach(e => {
+                    if (e.status === 0) {
+                        e.status = 1;
+                        stack.push(e);
+                    }
+                });
+            }
+        }
+    }
+}
 ```
 
 ## 排序和搜索算法
