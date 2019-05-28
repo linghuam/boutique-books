@@ -71,6 +71,16 @@ function DFS(graph, callback) {
     }
 }
 
+// function DFS(v, callback) {
+//     if (v == null) return;
+//     callback(v);
+//     v.status = 2;
+//     var adjVertexs = graph.getVertexAdj(v.id);
+//     adjVertexs.forEach(e => {
+//         if (e.status === 0) DFS(e, callback);
+//     });
+// }
+
 var graph = new Graph();
 graph.addVertex({id: 'A'});
 graph.addVertex({id: 'B'});
@@ -100,3 +110,6 @@ console.log('DFS:\n');
 DFS(graph, e => {
     console.log(e.id);
 });
+// DFS( graph.getVertex('A'), e => {
+//     console.log(e.id);
+// });

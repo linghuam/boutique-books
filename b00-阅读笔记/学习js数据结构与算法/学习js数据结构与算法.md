@@ -480,9 +480,86 @@ function DFS(graph, callback) {
         }
     }
 }
+
+// 递归写法
+function DFS(v, callback) {
+    if (v == null) return;
+    callback(v);
+    v.status = 2;
+    var adjVertexs = graph.getVertexAdj(v.id);
+    adjVertexs.forEach(e => {
+        if (e.status === 0) DFS(e, callback);
+    });
+}
 ```
 
 ## 排序和搜索算法
+
+### 冒泡排序
+
+两两比较，一轮比较后最大的数沉到底部。
+
+两层循环：
+
+* 外层循环表示比较的轮次
+* 内层循环表示每一轮冒泡
+
+```js
+function bubbleSort(arr) {
+    for (var i = 0, len = arr.length; i < len; i++) {
+        // 改进： j < len - 1 - i，已经排好序的可以不用再比较
+        for(var j = 0; j < len - 1 - i; j++) {
+            if (arr[j] > arr[j+1]) {
+                swap(arr, j, j+1);
+            }
+        }
+    }
+}
+```
+
+### 选择排序
+
+找到最小值，放到第一位；找到第二小的值，放到第二位，依次类推......。
+
+```js
+function selectionSort(arr) {
+    var minIndex;
+    for (var i = 0; i < arr.length-1; i++) {
+        minIndex = i;
+        for (var j = i+1; j < arr.length; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+        swap(arr, minIndex, i);
+    }
+}
+```
+
+### 插入排序
+
+往已经排好序的数组里面插入待排序的元素。
+
+假设数组第一项排好序，从第二项开始，与前面的比较，如果比前面小，继续向前，直到比前面的大。
+
+```js
+function insertionSort(arr) {
+    if (arr.length < 2) return arr;
+    for (var i = 1, len = arr.length; i < len; i++) {
+        var j = i - 1;
+        var temp = arr[i]; // 相当于将i提取出，留个空位
+        while(j >=0 && arr[j] > temp) {
+            arr[j+1] = arr[j];
+            j--;
+        }
+        arr[j+1] = temp;
+    }
+}
+```
+
+### 归并排序
+
+### 快速排序
 
 ## 算法补充知识
 
