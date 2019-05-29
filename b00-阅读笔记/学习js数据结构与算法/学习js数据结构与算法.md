@@ -559,7 +559,92 @@ function insertionSort(arr) {
 
 ### 归并排序
 
+归并排序是一种分治算法。其思想是将原始数组切分成较小的数组，直到每个小数组只有一
+个位置，接着将小数组归并成较大的数组，直到最后只有一个排序完毕的大数组。
+
+```js
+// https://www.cnblogs.com/chengxiao/p/6194356.html
+function mergeSort(arr) {
+    var len = arr.length;
+    if (len === 1) return arr;
+    var mid = Math.floor(len/2);
+    var left = arr.slice(0, mid);
+    var right = arr.slice(mid, len);
+    return merge(mergeSort(left), mergeSort(right));
+}
+function merge(left, right) {
+    var i = 0,
+        j = 0,
+        l = left.length,
+        r = right.length,
+        temp = [];
+    while(i < l && j < r) {
+        if (left[i] < right[j]) {
+            temp.push(left[i]);
+            i++;
+        } else {
+            temp.push(right[j]);
+            j++;
+        }
+    }
+    if (i < l) {
+        temp.push(...left.slice(i));
+    }
+    if (j < r) {
+        temp.push(...right.slice(j));
+    }
+    return temp;
+}
+```
+
 ### 快速排序
+
+分治算法。一次排序分两半，一半小，一半大，直到左指针大于右指针。
+
+(1) 首先，从数组中选择中间一项作为主元。
+(2) 创建两个指针，左边一个指向数组第一个项，右边一个指向数组最后一个项。移动左指
+针直到我们找到一个比主元大的元素，接着，移动右指针直到找到一个比主元小的元素，然后交
+换它们，重复这个过程，直到左指针超过了右指针。这个过程将使得比主元小的值都排在主元之前，而比主元大的值都排在主元之后。这一步叫作划分操作。
+(3) 接着，算法对划分后的小数组（较主元小的值组成的子数组，以及较主元大的值组成的子数组）重复之前的两个步骤，直至数组已完全排序。
+
+```js
+function quickSort(arr, left, right) {
+    var index;
+    if (arr.length > 1) {
+        index = partition(arr, left, right);
+        if (left < index - 1) {
+            quickSort(arr, left, index-1);
+        }
+        if (right > index) {
+            quickSort(arr, index, right);
+        }
+    }
+}
+
+function partition(arr, left, right) {
+    var pivot = arr[Math.floor((left+right)/2)],
+        i = left,
+        j = right;
+    while(i <= j) {
+        while(arr[i] < pivot) {
+            i++;
+        }
+        while(arr[j] > pivot) {
+            j--;
+        }
+        if (i <= j) {
+            swap(arr, i, j);
+            i++;
+            j--;
+        }
+    }
+    return i;
+}
+```
+
+### 顺序搜索
+
+### 二分搜索
 
 ## 算法补充知识
 

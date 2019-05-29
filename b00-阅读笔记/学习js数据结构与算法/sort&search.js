@@ -46,3 +46,68 @@ function insertionSort(arr) {
     }
 }
 insertionSort(arr);
+
+function mergeSort(arr) {
+    var len = arr.length;
+    if (len === 1) return arr;
+    var mid = Math.floor(len/2);
+    var left = arr.slice(0, mid);
+    var right = arr.slice(mid, len);
+    return merge(mergeSort(left), mergeSort(right));
+}
+function merge(left, right) {
+    var i = 0, 
+        j = 0, 
+        l = left.length, 
+        r = right.length, 
+        temp = [];
+    while(i < l && j < r) {
+        if (left[i] < right[j]) {
+            temp.push(left[i]);
+            i++;
+        } else {
+            temp.push(right[j]);
+            j++;
+        }
+    }
+    if (i < l) {
+        temp.push(...left.slice(i));
+    }
+    if (j < r) {
+        temp.push(...right.slice(j));
+    }
+    return temp;
+}
+
+function quickSort(arr, left, right) {
+    var index;
+    if (arr.length > 1) {
+        index = partition(arr, left, right);
+        if (left < index - 1) {
+            quickSort(arr, left, index-1);
+        }
+        if (right > index) {
+            quickSort(arr, index, right);
+        }
+    }
+}
+
+function partition(arr, left, right) {
+    var pivot = arr[Math.floor((left+right)/2)],
+        i = left,
+        j = right;
+    while(i <= j) {
+        while(arr[i] < pivot) {
+            i++;
+        }
+        while(arr[j] > pivot) {
+            j--;
+        }
+        if (i <= j) {
+            swap(arr, i, j);
+            i++;
+            j--;
+        }
+    }
+    return i;
+}
