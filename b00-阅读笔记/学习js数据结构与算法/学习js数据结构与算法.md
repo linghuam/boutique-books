@@ -644,8 +644,83 @@ function partition(arr, left, right) {
 
 ### 顺序搜索
 
-### 二分搜索
+一一对比。
+
+### 二分搜索（二分查找）
+
+对于已排好序的数组。
+
+```js
+function binarySearch(arr, value) {
+    var left = 0,
+        right = arr.length - 1;
+    var mid;
+    while(left <= right) {
+        mid = Math.floor((left+right)/2);
+        if (value < arr[mid]) {
+            right = mid - 1;
+        } else if(value > arr[mid]){
+            left = mid + 1;
+        } else {
+            return mid;
+        }
+    }
+    return -1;
+}
+```
 
 ## 算法补充知识
 
+### 递归
+
+[尾调用优化](https://juejin.im/post/5a4d898a518825698e7277d1)
+
+```js
+// 递归
+function fibonacci(num) {
+    if (num === 1 || num === 2) return 1;
+    return fibonacci(num-1) + fibonacci(num-2);
+}
+
+// 非递归
+function fibonacci(num) {
+    var n1 = 1, n2 = 1, n=1;
+    for (var i = 3; i <= num; i++) {
+        n = n1 + n2;
+        n1 = n2;
+        n2 = n;
+    }
+    return n;
+}
+```
+
+### 动态规划（Dynamic Programming， DP）
+
+是一种将复杂问题分解成更小的子问题来解决的优化技术。
+
+要注意动态规划和分而治之（归并排序和快速排序算法中用到的那种）是不同的方法。
+分而治之方法是把问题分解成相互独立的子问题，然后组合它们的答案，而动态规划则是将问题分解成相互依赖的子问题。
+
+解决的问题：
+
+* 背包问题：给出一组项目，各自有值和容量，目标是找出总值最大的项目的集合。这个
+问题的限制是，总容量必须小于等于“背包”的容量。
+
+* 最长公共子序列：找出一组序列的最长公共子序列（可由另一序列删除元素但不改变余
+下元素的顺序而得到）。
+
+* 矩阵链相乘：给出一系列矩阵，目标是找到这些矩阵相乘的最高效办法（计算次数尽可
+能少）。相乘操作不会进行，解决方案是找到这些矩阵各自相乘的顺序。
+
+* 硬币找零：给出面额为d1…dn的一定数量的硬币和要找零的钱数，找出有多少种找零的
+方法。
+
+* 图的全源最短路径：对所有顶点对(u, v)，找出从顶点u到顶点v的最短路
+
+### 贪心算法
+
+### 大 O 表示法
+
 ## 时间复杂度速查表
+
+![时间复杂度曲线图](./时间复杂度曲线图.jpg)
