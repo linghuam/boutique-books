@@ -673,7 +673,15 @@ function binarySearch(arr, value) {
 
 ### 递归
 
+尾调用是指某个函数的最后一步是调用另一个函数。
+
 [尾调用优化](https://juejin.im/post/5a4d898a518825698e7277d1)
+
+[尾调用优化——记一道面试题的思考](https://segmentfault.com/a/1190000014747296)
+
+[朋友你听说过尾递归吗](https://imweb.io/topic/584d33049be501ba17b10aaf)
+
+[尾递归的后续探究](https://imweb.io/topic/5a244260a192c3b460fce275)
 
 ```js
 // 递归
