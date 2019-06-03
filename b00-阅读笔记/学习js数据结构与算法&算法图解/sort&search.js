@@ -128,3 +128,20 @@ function binarySearch(arr, value) {
     }
     return -1;
 }
+
+function quickSort(arr) {
+    if (arr.length < 2) return arr;
+    var baseIndex = Math.floor(arr.length / 2);
+    var leftArr = [];
+    var rightArr = [];
+    for (var i = 0, len = arr.length; i < len; i++) {
+        if (i !== baseIndex) {
+            if (arr[i] < arr[baseIndex]) {
+                leftArr.push(arr[i]);
+            } else {
+                rightArr.push(arr[i]);
+            }
+        }
+    }
+    return quickSort(leftArr).concat([arr[baseIndex]]).concat(quickSort(rightArr));
+}

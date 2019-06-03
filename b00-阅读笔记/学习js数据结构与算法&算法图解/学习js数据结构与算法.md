@@ -1,4 +1,4 @@
-# 学习js数据结构与算法
+# 学习js数据结构与算法 & 算法图解
 
 ## 栈
 
@@ -639,6 +639,30 @@ function partition(arr, left, right) {
         }
     }
     return i;
+}
+```
+
+```js
+// 《算法图解》思路
+// 基线条件：空数组或长度为1的数组不需要排序
+// 递归条件：每次选择一个基准值，得到三个部分（小于基准值 + 基准值 + 大于基准值）
+// 对基准值两边的数组继续快排，并将最后的数组合并
+function quickSort(arr) {
+    if (arr.length < 2) return arr; // 基线条件
+    var baseIndex = Math.floor(arr.length / 2); // 基准值
+    var leftArr = [];
+    var rightArr = [];
+    for (var i = 0, len = arr.length; i < len; i++) {
+        if (i !== baseIndex) {
+            if (arr[i] < arr[baseIndex]) {
+                leftArr.push(arr[i]); // 小于基准值部分
+            } else {
+                rightArr.push(arr[i]); // 大于基准值部分
+            }
+        }
+    }
+    // 最后合并
+    return quickSort(leftArr).concat([arr[baseIndex]]).concat(quickSort(rightArr));
 }
 ```
 
