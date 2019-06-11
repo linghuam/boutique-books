@@ -37,6 +37,7 @@ Some of the fine books I have read.
 - [《HTML5 Canvas核心技术》](b04-图形学与可视化/HTML5Canvas核心技术-图形动画与游戏开发.pdf)
 - [《WebGL高级编程：开发Web3D图形》](b04-图形学与可视化/WebGL高级编程：开发Web3D图形.pdf)
 - [《计算机图形学》](b04-图形学与可视化/计算机图形学第4版.pdf)
+- [《WebGL编程指南》](b04-图形学与可视化/WebGL编程指南.pdf)
 
 ## b05-HTML与CSS
 
