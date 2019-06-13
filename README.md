@@ -31,6 +31,7 @@ Some of the fine books I have read.
 
 - [《算法图解》](b03-数据结构与算法/算法图解.pdf)
 - [《学习js数据结构与算法》](b03-数据结构与算法/学习js数据结构与算法.pdf)
+- [《数据结构与算法JavaScript描述》](b03-数据结构与算法/数据结构与算法JavaScript描述.pdf)
 
 ## b04-图形学与可视化
 
@@ -43,6 +44,7 @@ Some of the fine books I have read.
 
 - [《CSS世界》](b05-HTML与CSS/CSS世界-张鑫旭.pdf)
 - [《CSS揭秘》](b05-HTML与CSS/CSS揭秘.pdf)
+- [《CSS权威指南》](b05-HTML与CSS/CSS权威指南-第三版.pdf)
 
 ## b06-JS与NodeJS
 
@@ -52,6 +54,8 @@ Some of the fine books I have read.
 - [《你不知道的JavaScript-中卷》](b06-JS与NodeJS/你不知道的JavaScript(中卷).pdf)
 - [《你不知道的JavaScript-下卷》](b06-JS与NodeJS/你不知道的JavaScript(下卷).pdf)
 - [《JavaScript模式》](b06-JS与NodeJS/JavaScript模式.Stoyan.Stefanov.pdf)
+- [《JavaScript+DOM编程艺术》](b06-JS与NodeJS/JavaScript+DOM编程艺术.pdf)
+- [《JavaScript高级程序设计》](b06-JS与NodeJS/JavaScript高级程序设计.pdf)
 
 ## b07-其他
 
