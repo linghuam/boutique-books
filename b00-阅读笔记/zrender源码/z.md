@@ -35,11 +35,28 @@ var zrender = {
 
 * 从顶点数组中计算出最小包围盒
 * 从直线计算最小包围盒
-* 从三阶贝塞尔曲线(p0, p1, p2, p3)中计算出最小包围盒
-* 从二阶贝塞尔曲线(p0, p1, p2)中计算出最小包围盒
+* 从三阶贝塞尔曲线(p0, p1, p2, p3)中计算出最小包围盒（找极值点和始末点的包围盒）
+* 从二阶贝塞尔曲线(p0, p1, p2)中计算出最小包围盒（找极值点和始末点的包围盒）
 * 从圆弧中计算出最小包围盒
 
 ### BoundingRect.js
+
+属性：
+
+* x
+* y
+* width
+* heigth
+
+方法：
+
+* 合并
+* 变换
+* 相交
+* 包含
+* 克隆
+* 复制
+* 序列化
 
 ### curve.js
 
@@ -110,3 +127,12 @@ function quadraticSubdivide(p0, p1, p2, t, out) {
 投射点到二/三次贝塞尔曲线上，返回投射距离（一个或者多个，这里只返回其中距离最短的一个）。
 
 [根据已知点找曲线上离它最近的点](https://pomax.github.io/bezierinfo/#projections)
+
+### env.js
+
+设备环境识别
+
+[Zepto.js](https://github.com/madrobby/zepto/blob/master/src/detect.js)
+
+### src/core/event.js
+
