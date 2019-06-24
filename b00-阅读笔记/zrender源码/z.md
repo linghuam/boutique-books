@@ -60,7 +60,7 @@ var zrender = {
 
 ### curve.js
 
-计算二/三次方贝塞尔值
+计算二/三次方**贝塞尔值**
 
 ```js
 function quadraticAt(p0, p1, p2, t) {
@@ -72,7 +72,7 @@ function cubicAt(p0, p1, p2, p3, t) {
 }
 ```
 
-计算二/三次方贝塞尔导数值
+计算二/三次方贝塞尔**导数值**
 
 ```js
 function quadraticDerivativeAt(p0, p1, p2, t) {
@@ -84,11 +84,11 @@ function cubicDerivativeAt(p0, p1, p2, p3, t) {
 }
 ```
 
-计算二/三次方贝塞尔方程根
+计算二/三次方贝塞尔**方程根**
 
 [盛金公式](https://blog.csdn.net/liutaojia/article/details/83005533)
 
-计算二/三次贝塞尔方程极限值
+计算二/三次贝塞尔方程**极限值**
 
 ```js
 //令导数值为零，求出对应的 t 值
@@ -104,7 +104,7 @@ function quadraticExtremum(p0, p1, p2) {
 }
 ```
 
-细分二/三次贝塞尔曲线（过细分点切线与始末切线的交点）
+**细分**二/三次贝塞尔曲线（过细分点切线与始末切线的交点）
 
 ```js
 function quadraticSubdivide(p0, p1, p2, t, out) {
@@ -124,15 +124,211 @@ function quadraticSubdivide(p0, p1, p2, t, out) {
 }
 ```
 
-投射点到二/三次贝塞尔曲线上，返回投射距离（一个或者多个，这里只返回其中距离最短的一个）。
+**投射**点到二/三次贝塞尔曲线上，返回投射距离（一个或者多个，这里只返回其中距离最短的一个）。
 
 [根据已知点找曲线上离它最近的点](https://pomax.github.io/bezierinfo/#projections)
 
 ### env.js
 
-设备环境识别
+设备环境识别：[Zepto.js](https://github.com/madrobby/zepto/blob/master/src/detect.js)
 
-[Zepto.js](https://github.com/madrobby/zepto/blob/master/src/detect.js)
+### event.js
 
-### src/core/event.js
+`DOM事件`和`对象事件`
 
+#### clientToLocal
+
+将鼠标事件坐标转换成canvas坐标。
+
+e.offsetX/e.offsetY 相对于 `padding box`。
+
+> According to the W3C Working Draft, offsetX and offsetY should be relative to the padding edge of the target element. The only browser using this convention is IE. Webkit uses the border edge,Opera uses the content edge, and FireFox does not support the properties.(see http://www.jacklmoore.com/notes/mouse-position/).
+
+#### addEventListener/removeEventListener
+
+```js
+var isDomLevel2 = (typeof window !== 'undefined') && !!window.addEventListener;
+export function addEventListener(el, name, handler) {
+    if (isDomLevel2) {
+        // https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+        el.addEventListener(name, handler);
+    }
+    else {
+        el.attachEvent('on' + name, handler);
+    }
+}
+
+export function removeEventListener(el, name, handler) {
+    if (isDomLevel2) {
+        el.removeEventListener(name, handler);
+    }
+    else {
+        el.detachEvent('on' + name, handler);
+    }
+}
+```
+
+#### stop event / event object
+
+```js
+var stop = isDomLevel2
+    ? function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.cancelBubble = true;
+    }
+    : function (e) {
+        e.returnValue = false;
+        e.cancelBubble = true;
+    };
+var event = function(e) {
+    return e || window.event;
+}
+```
+
+### fourPointsTransform.js
+
+### GestureMgr.js
+
+### guid.js
+
+```js
+// zrender: 生成唯一id
+var idStart = 0x0907;
+export default function () {
+    return idStart++;
+}
+```
+
+### log.js
+
+```js
+var log = function () {
+};
+
+if (debugMode === 1) {
+    log = function () {
+        for (var k in arguments) {
+            throw new Error(arguments[k]);
+        }
+    };
+}
+else if (debugMode > 1) {
+    log = function () {
+        for (var k in arguments) {
+            console.log(arguments[k]);
+        }
+    };
+}
+```
+
+### LRU.js
+
+doubly linked list.
+
+```js
+linkedListProto.insertEntry = function (entry) {
+    if (!this.head) {
+        this.head = this.tail = entry;
+    }
+    else {
+        this.tail.next = entry;
+        entry.prev = this.tail;
+        entry.next = null;
+        this.tail = entry;
+    }
+    this._len++;
+};
+linkedListProto.remove = function (entry) {
+    var prev = entry.prev;
+    var next = entry.next;
+    if (prev) {
+        prev.next = next;
+    }
+    else {
+        // Is head
+        this.head = next;
+    }
+    if (next) {
+        next.prev = prev;
+    }
+    else {
+        // Is tail
+        this.tail = prev;
+    }
+    entry.next = entry.prev = null;
+    this._len--;
+};
+
+// O(1) remove operation.
+// 空间换时间，将删除和查询操作优化到 O(1) 时间复杂度
+var LRU = function (maxSize) {
+
+    this._list = new LinkedList();
+
+    this._map = {};
+
+    this._maxSize = maxSize || 10;
+
+    this._lastRemovedEntry = null;
+};
+
+var LRUProto = LRU.prototype;
+
+/**
+ * @param  {string} key
+ * @param  {} value
+ * @return {} Removed value
+ */
+LRUProto.put = function (key, value) {
+    var list = this._list;
+    var map = this._map;
+    var removed = null;
+    if (map[key] == null) {
+        var len = list.len();
+        // Reuse last removed entry
+        var entry = this._lastRemovedEntry;
+        // 超出长度，移除头部，尾部插入新节点
+        if (len >= this._maxSize && len > 0) {
+            // Remove the least recently used
+            var leastUsedEntry = list.head;
+            list.remove(leastUsedEntry);
+            delete map[leastUsedEntry.key];
+
+            removed = leastUsedEntry.value;
+            this._lastRemovedEntry = leastUsedEntry;
+        }
+
+        if (entry) {
+            entry.value = value;
+        }
+        else {
+            entry = new Entry(value);
+        }
+        entry.key = key;
+        list.insertEntry(entry);
+        map[key] = entry;
+    }
+
+    return removed;
+};
+
+/**
+ * @param  {string} key
+ * @return {}
+ */
+LRUProto.get = function (key) {
+    var entry = this._map[key];
+    var list = this._list;
+    if (entry != null) {
+        // 最近访问的节点放到尾部
+        // Put the latest used entry in the tail
+        if (entry !== list.tail) {
+            list.remove(entry);
+            list.insertEntry(entry);
+        }
+
+        return entry.value;
+    }
+};
+```
