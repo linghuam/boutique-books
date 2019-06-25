@@ -188,7 +188,11 @@ var event = function(e) {
 
 ### fourPointsTransform.js
 
+The algoritm is learnt from：https://franklinta.com/2014/09/08/computing-css-matrix3d-transforms/
+
 ### GestureMgr.js
+
+手势判断
 
 ### guid.js
 
@@ -332,3 +336,41 @@ LRUProto.get = function (key) {
     }
 };
 ```
+
+### matrix.js
+
+矩阵操作:
+
+* 矩阵相乘
+* 平移变换
+* 旋转变换
+* 缩放变换
+* 求逆矩阵
+
+### PathProxy.js
+
+### timsort.js
+
+https://github.com/mziccard/node-timsort
+https://www.infopulse.com/blog/timsort-sorting-algorithm/
+
+### util.js
+
+```js
+ function inherits(clazz, baseClazz) {
+    var clazzPrototype = clazz.prototype;
+    function F() {}
+    F.prototype = baseClazz.prototype;
+    clazz.prototype = new F();
+
+    for (var prop in clazzPrototype) {
+        clazz.prototype[prop] = clazzPrototype[prop];
+    }
+    clazz.prototype.constructor = clazz;
+    clazz.superClass = baseClazz;
+}
+```
+
+### vector.js
+
+向量
