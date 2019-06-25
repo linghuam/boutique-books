@@ -60,3 +60,4 @@ Some of the fine books I have read.
 ## b07-其他
 
 - [《史蒂夫乔布斯传》](b07-其他/史蒂夫乔布斯传.mobi)
+- [《浪潮之巅》](b07-其他/浪潮之巅-吴军.mobi)
