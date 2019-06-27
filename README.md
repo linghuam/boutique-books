@@ -39,6 +39,7 @@ Some of the fine books I have read.
 - [《WebGL高级编程：开发Web3D图形》](b04-图形学与可视化/WebGL高级编程：开发Web3D图形.pdf)
 - [《计算机图形学》](b04-图形学与可视化/计算机图形学第4版.pdf)
 - [《WebGL编程指南》](b04-图形学与可视化/WebGL编程指南.pdf)
+- [《3D游戏与计算机图形学中的数学方法》](b04-图形学与可视化/3D游戏与计算机图形学中的数学方法_2Ed_CN.pdf)
 
 ## b05-HTML与CSS
 
