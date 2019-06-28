@@ -228,7 +228,7 @@ else if (debugMode > 1) {
 
 ### LRU.js
 
-doubly linked list.
+优化后的双向链表，时间复杂度o(1)。
 
 ```js
 linkedListProto.insertEntry = function (entry) {
@@ -349,10 +349,39 @@ LRUProto.get = function (key) {
 
 ### PathProxy.js
 
+Path 代理，可以在`buildPath`中用于替代`ctx`, 会保存每个path操作的命令到pathCommands属性中可以用于isInsidePath 判断以及获取boundingRect。
+
+比原生Path的好处：1、数据可保存可恢复；2、支持bounding、isInside判断；3、可以封装一些自定义path；
+
+ ```js
+/*
+保存 path 数据的思路：
+1、用整数来表示绘制指令，cmd定义
+2、绘制的时候用普通数组 push 指令和坐标
+3、绘制完成（fill、stroke）时将普通数组转成 Float32Array 静态存储，减少堆内存占用
+*/
+
+/**
+ * 转成静态的 Float32Array 减少堆内存占用
+ * Convert dynamic array to static Float32Array
+ */
+function toStatic () {
+    var data = this.data;
+    if (data instanceof Array) {
+        data.length = this._len;
+        if (hasTypedArray) {
+            this.data = new Float32Array(data);
+        }
+    }
+}
+```
+
 ### timsort.js
 
-https://github.com/mziccard/node-timsort
-https://www.infopulse.com/blog/timsort-sorting-algorithm/
+时间复杂度为 nlogn 的排序算法
+
+* [node-timsort](https://github.com/mziccard/node-timsort)
+* [timsort-sorting-algorithm](https://www.infopulse.com/blog/timsort-sorting-algorithm/)
 
 ### util.js
 
@@ -373,4 +402,4 @@ https://www.infopulse.com/blog/timsort-sorting-algorithm/
 
 ### vector.js
 
-向量
+向量操作
