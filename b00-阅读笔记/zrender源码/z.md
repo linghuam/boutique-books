@@ -386,20 +386,26 @@ function toStatic () {
 ### util.js
 
 ```js
- function inherits(clazz, baseClazz) {
-    var clazzPrototype = clazz.prototype;
-    function F() {}
-    F.prototype = baseClazz.prototype;
-    clazz.prototype = new F();
+function bind(func, context) {
+    var nativeSlice = Array.prototype.slice;
+    var args = nativeSlice.call(arguments, 2);
+    return function() {
+        return func.apply(context, args.concat(nativeSlice.call(arguments)));
+    };
+}
 
-    for (var prop in clazzPrototype) {
-        clazz.prototype[prop] = clazzPrototype[prop];
+function curry(func) {
+    var nativeSlice = Array.prototype.slice;
+    var args = nativeSlice.call(arguments, 1);
+    return function() {
+        return func.apply(this, args.concat(nativeSlice.call(arguments)));
     }
-    clazz.prototype.constructor = clazz;
-    clazz.superClass = baseClazz;
 }
 ```
 
 ### vector.js
 
 向量操作
+
+## src/animation
+
