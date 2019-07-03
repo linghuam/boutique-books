@@ -410,3 +410,7 @@ function curry(func) {
 ## src/animation
 
 ## src/contain
+
+### text.js
+
+利用 textWidthCache 缓存文字宽度，避免重复计算。
