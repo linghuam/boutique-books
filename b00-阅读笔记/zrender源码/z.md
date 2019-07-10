@@ -409,8 +409,21 @@ function curry(func) {
 
 ## src/animation
 
+动画
+
 ## src/contain
 
-### text.js
+路径是否包含点
 
-利用 textWidthCache 缓存文字宽度，避免重复计算。
+## src/container
+
+Group是一个容器，可以插入子节点，Group的变换也会被应用到子节点上
+
+## src/dom
+
+DOM事件处理
+
+## src/graphic
+
+## src/mixin
+
