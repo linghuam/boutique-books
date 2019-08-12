@@ -424,6 +424,7 @@ Group是一个容器，可以插入子节点，Group的变换也会被应用到�
 DOM事件处理
 
 ## src/graphic
+src/graphic/Text.js
 
 ## src/mixin
 
