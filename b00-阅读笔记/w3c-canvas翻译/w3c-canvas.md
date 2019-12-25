@@ -214,6 +214,84 @@ context.restore() 在栈顶弹出状态，将上下文恢复到该状态。
 
 ## 线样式
 
+> NOTE
+
+> context.[lineWith](#lineWith)[ = value ]
+返回当前线宽。
+lineWidth 属性以坐标空间单位给出线的宽度。获取时，它必须返回当前值。零，负，无限和NaN值将被忽略。
+默认值是`1.0`。
+
+> context.[lineCap](#lineCap)[ = value ]
+返回当前的线帽样式。
+可能的值为 “butt”，“round” 和 “square”。其他值将被忽略。
+默认值是`butt`。
+
+> context.[lineJoin](#lineJoin)[ = value ]
+返回当前的线连接样式。
+可能的线连接样式为 “bevel”，“round” 和 “miter”。其他值将被忽略。
+默认值是`miter`。
+
+> context.[miterLimit](#miterLimit)[ = value ]
+返回当前的斜接极限比率。
+可以设置，以更改斜接极限比。零，负，无限和NaN值必须忽略。
+当`lineJoin`属性的值为 “miter” 时，描边将使用斜接限制比率来决定如何渲染连接。可以使用`miterLimit`属性显式设置斜接极限比率。
+默认值是`10.0`。
+
+> context.[setLineDash](#setLineDash)(segments)
+设置当前线的虚线图案（在描边时使用）。
+该参数是距离的数组，距离要交替显示。
+
+> segments = context.[getLineDash](#getLineDash)()
+返回当前线交替类型的副本。
+返回的数组将始终具有偶数个条目（即模式已规范化）。
+
+> context.[lineDashOffset](#lineDashOffset)[ = value ]
+返回相位偏移（以与 line dash pattern 相同的单位）。
+可以设置，以更改相位偏移。不是有限值的值将被忽略。
+默认值是`0.0`。
+
+实现 [CanvasDrawingStyles](https://www.w3.org/TR/2dcontext/#canvasdrawingstyles) 接口的对象具有控制对象如何处理线的属性和方法。
+
+**lineCap:**
+![](./assets/lineCap.jpg)
+
+**lineJoin:**
+![](./assets/lineJoin.jpg)
+
+每个 CanvasDrawingStyles 对象都有一个 **dash list** 列表，该 **dash list** 可以为空或由偶数个非负数组成。**dash list** 初始值为空数组。
+
+调用`setLineDash()`方法时，它必须运行以下步骤：
+1. 令`a`为作为提供的参数数组的副本。
+2. 如果数组中包含 Infinity、NaN、负数，则终止此步骤（不会抛出异常；用户代理可能会在开发人员控制台上显示一条消息，因为这将有助于调试）。
+3. 如果`a`中元素的数量为奇数，则令`a`为`a`的两个副本的串联。
+4. 设置 **dash list** 为`a`。
+
+代码描述：
+```js
+var dataList;
+function setLineDash(a) {
+  var isErrorValue = a.some(value => value === Infinity || value !== value || value < 0);
+  if (isErrorValue) {
+    console.warn('数据不合法！');
+    return;
+  }
+  if (a.length % 2 !== 0) {
+    a = a.concat(a);
+  }
+  dataList = a;
+}
+```
+
+当调用`getLineDash()`方法时，它必须以相同的顺序返回一个新创建的 **dash list** 数组。
+
+有时更改虚线图案的“phase（相位）”很有用。例如实现“行军蚁”的效果。可以使用`lineDashOffset`属性设置相位。
+
+当用户代理要跟踪实现`CanvasDrawingStyles`接口的路径时，它必须运行以下算法。该算法返回新路径。
+1. 令`path`为要跟踪的路径的副本。
+2. 干掉路径中所有`长度为零`的线段。
+3. 从路径中删除任何不包含线的子路径（即只有一个点的子路径）。
+4. 
+
 ## 文本样式
 
 ## 建立路径
