@@ -290,9 +290,92 @@ function setLineDash(a) {
 1. 令`path`为要跟踪的路径的副本。
 2. 干掉路径中所有`长度为零`的线段。
 3. 从路径中删除任何不包含线的子路径（即只有一个点的子路径）。
-4. 
+4. Replace each point in each subpath of path other than the first point and the last point of each subpath by a join that joins the line leading to that point to the line leading out of that point, such that the subpaths all consist of two points (a starting point with a line leading out of it, and an ending point with a line leading into it), one or more lines (connecting the points and the joins), and zero or more joins (each connecting one line to another), connected together such that each subpath is a series of one or more lines with a join between each one and a point on each end.
+5. 向连接该子路径的最后一点和第一个点的路径中的每个闭合子路径添加一条直线闭合线；将最后一点更改为联接(从先前的最后一条线到新添加的闭合线)，并将第一个点更改为联接（从新添加的闭合线到第一条线）。
+6. 如果 **dash list** 为空，请跳至标有“转换”的步骤。
+7. 设`pattern width`为`dash list`列表中所有条目的串联，以坐标空间单位表示。
+8. 对于路径中的每个子路径，运行以下子步骤。这些子步骤会改变路径中的子路径。
+    1. 设子路径宽度为子路径所有线的长度，以坐标空间单位为单位。 
+    2. 设`offset`为样式`lineDashOffset`的值，以坐标空间单位为单位。
+    3. 当偏移量`offset`大于`pattern width`时，将其按`pattern width`减小。
+    4. 将`L`定义为沿子路径中所有线定义的线性坐标线，这样子路径中第一条线的开始被定义为坐标0，子路径中最后一条线的结束被定义为坐标子路径宽度。
+    5. 设置`position = 0 - offset`。
+    6. 设置`index = 0`。
+    7. 让当前状态`current state`为关闭（其他状态为打开且为零打开）。
+    8. **Dash on**：使段长度`segment length`为样式划线列表`styles dash list`的第`index`个条目的值。
+    9. 按段长度`segment length`递增位置`position`。
+    10. 如果位置`position`大于子路径宽度`subpath width`，然后结束此子路径的这些子步骤，并为下一个子路径再次启动它们；如果没有更多子路径，然后跳到标有“转换”的步骤。
+    11. 如果段长度`segment length`不为零，则打开当前状态`current state`。
+    12. `index++`。
+    13. **Dash off**：使段长度`segment length`为样式划线列表`styles dash list`的第`index`个条目的值。
+    14. 令`start`为`L`上的偏移位置`position`。
+    15. 按段长度`segment length`递增位置`position`。
+    16. 如果位置`position`小于零，则跳至标记为后切的步骤。
+    17. 如果`start`小于零，则将`start`设为零。
+    18. 如果`position`大于子路径宽度`subpath width`，则使`end`为`L`上的偏移子路径宽度`subpath width`。否则，使`end`为`L`上的偏移位置`position`。
+    19. 根据需要运行以下子步骤之一：
+        * **如果段长度`segment length`为零且当前状态`current state`为关闭`off`**
+        什么也不做，只要继续下一步即可。
+        * **如果当前状态`current state`为关闭`off`**
+        Cut the line on which end finds itself short at end and place a point there, cutting its containing subpath in two; remove all line segments, joins, points, and subpaths that are between start and end; and finally place a single point at start with no lines connecting to it.
+        The point has a directionality for the purposes of drawing line caps (see below). The directionality is the direction that the original line had at that point (i.e. when L was defined above).
+        * **除此以外**
+        Cut the line on which start finds itself into two at start and place a point there, cutting the subpath that it was in in two, and similarly cut the line on which end finds itself short at end and place a point there, cutting the subpath that it was in in two, and then remove all line segments, joins, points, and subpaths that are between start and end.
+        If start and end are the same point, then this results in just the line being cut in two and two points being inserted there, with nothing being removed, unless a join also happens to be at that point, in which case the join must be removed.
+    20. 剪切后`Post-cut:`：如果位置`position`大于子路径宽度`subpath width`，则跳至标有“转换”的步骤。
+    21. 如果线段长度`segment length`大于零，则使“在虚线处定位”`positioned-at-on-dash`为假。
+    22. `index++`。如果它等于样式`dash list`列表中的条目数，则使`index`为`0`。
+    23. 跳到第`8`步，`Dash on`。
+9. 转换`Convert`：这是将路径转换为代表其笔划`stroke`的新路径的步骤。
+创建一条描述区域边缘的新路径，区域将被覆盖，如果一条直线的长度等于`lineWidth`，且沿路径中的每个路径扫过，同时保持一定角度，以使直线与扫掠路径正交，将每个点替换为满足样式`lineCap`属性所必需的端盖，如前所述并在下面进行详细说明，并用满足样式`lineJoin`类型所需的联接替换每个联接，定义如下。
+
+    **Caps**：每个点都有一个垂直于从其中出来的线的方向的平坦边缘。根据样式`lineCap`的值对它们进行扩充。“`butt`”值表示未添加任何额外的线宽。“`round`”值意味着必须将直径等于样式`lineWidth`宽度的半圆附加放置在从每个点出来的线上。“`square`”值表示矩形，其长度为样式`lineWidth`宽度，宽度为样式`lineWidth`的一半，垂直于从点出线的方向垂直于边缘放置，必须在每个点添加。
+
+    没有线的点必须背对背放置两个顶盖，就好像两个点实际上是沿点的方向性（如上定义）通过一条无限短的直线相互连接。
+
+    **Joins**：除了连接发生的点外，每个联接都有两个额外的要点，一个针对每条线：发现两个角距连接点的线宽的一半；一个垂直于每条线，每条线都离另一条线最远。
+
+    必须在所有联接处添加一个实心三角形，将这两个相对的角用一条直线连接，并将三角形的第三点作为联接点。 `lineJoin`属性控制是否呈现任何其他内容。 上述三个值的含义如下：
+
+    “`bevel`”值表示这是在联接时渲染的所有内容。
+    “`round`”值表示必须添加一个连接圆弧的两个圆角，该圆弧邻接（但不重叠）上述    三角形，并且直径等于线宽和连接点的原点 在加入。
+    “`miter`”值表示必须在连接处添加第二个填充的三角形（如果可以给出斜接长度）    ，其中一条线是上述两个角之间的线，邻接第一个三角形，另外两个是连续的 只要在    不超过斜接长度的情况下相交即可，只要两条连接线的外边缘的长度相等即可。
+    
+    斜接长度是从连接发生点到连接外部线边缘的交点的距离。 斜接极限比是斜接长度与    线宽一半的最大允许比率。 如果斜接长度会导致超出斜接限制比率（由样式    `miterLimit`属性设置），则不得添加第二个三角形。
+    
+    无论路径在路径中的方向如何，新创建的路径中的子路径都必须顺时针缠绕。
+
+10. 返回新创建的路径。
 
 ## 文本样式
+
+> NOTE
+
+> context.[font](#font) [ = value ]
+返回当前字体设置。
+可以设置更改字体。语法与 CSS [font](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font) 属性的语法相同。无法解析为 CSS 字体值的值将被忽略。
+相对关键字和长度值是相对于 canvas 元素的字体计算的。
+默认值`10px sans-serif`。
+
+> context.[textAlign](#textAlign) [ = value ]
+返回当前的文本对齐设置。
+可以设置，更改对齐方式。可能的值为“`start`”，“`end`”，“`left`”，“`right`”和“`center`”。其他值将被忽略。默认值为“`start`”。
+
+> context.[textBaseline](#textBaseline) [ = value ]
+返回当前基线对齐设置。
+可以设置，以更改基线对齐方式。可能的值 "`top`", "`hanging`", "`middle`", "`alphabetic`", "`ideographic`", or "`bottom`",。其他值将被忽略。默认为“`alphabetic`”。
+
+设置`font`时，必须以与CSS的'font'属性相同的方式解析字体（但不支持与属性无关的样式表语法，例如'inherit'），并且必须将生成的字体分配给上下文， '`line-height`'组件被强制为'`normal`'，'`font-size`'组件被转换为CSS像素，并且系统字体被计算为显式值。 如果新值在语法上不正确（包括使用与属性无关的样式表语法，如“inherit”或“initial”），则必须忽略它，而无需分配新的字体值。
+
+使用字体时，必须在字体样式源节点`font style source node's`的样式表的上下文中解释字体名称；因此，一旦加载，使用`@font-face`嵌入的，对该元素可见的任何字体都必须可用。
+
+用户代理只能使用矢量字体；如果用户代理使用位图字体，则转换可能会使字体看起来非常难看。
+
+获取时，`font`属性必须返回上下文当前字体的序列化形式（不包含“line-height”组件）。
+
+`textBaseline`属性的允许关键字对应于字体中的对齐点：
+
+![](./assets/baselines.png)
 
 ## 建立路径
 
