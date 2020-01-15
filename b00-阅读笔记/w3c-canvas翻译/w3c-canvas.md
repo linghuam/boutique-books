@@ -18,7 +18,7 @@
 4. [文本样式](#文本样式)
 5. [建立路径](#建立路径)
 6. [变换](#变换)
-7. [2D渲染上下文的图像源](#2D渲染上下文的图像源)
+7. [2D渲染上下文的图像源](#t2D渲染上下文的图像源)
 8. [填充和描边样式](#填充和描边样式)
 9. [在画布上绘制矩形](#在画布上绘制矩形)
 10. [在画布上绘制文字](#在画布上绘制文字)
@@ -379,11 +379,125 @@ function setLineDash(a) {
 
 ## 建立路径
 
-## 变换
+每个实现 [CanvasPathMethods](https://www.w3.org/TR/2dcontext/#canvaspathmethods) 接口的对象都有一个路径。路径具有零个或多个子路径的集合。每个子路径包含一个或多个点的集合，这些点由直线或曲线连接，并有指示子路径是否闭合的标志。闭合子路径是通过直线将子路径的最后一点连接到子路径的第一点的路径。绘制路径时，少于两个点的子路径将被忽略。
+
+创建实现 CanvasPathMethods 接口的对象时，其路径必须初始化为零个子路径。
+
+> NOTE
+
+> context.[moveTo](#moveTo)(x, y)
+  用给定的点创建一个新的子路径。
+
+> context.[closePath](#closePath)()
+  将当前子路径标记为已关闭，并以与新关闭的子路径的起点和终点相同的点开始一个新的子路径。
+
+> context.[lineTo](#lineTo)(x, y)
+  将给定点添加到当前子路径，该子路径通过一条直线连接到前一个子路径。
+
+> context.[quadraticCurveTo](#quadraticCurveTo)(cpx, cpy, x, y)
+  将给定点添加到当前子路径，该子路径通过具有给定控制点的二次Bézier曲线与上一个子路径连接。
+
+> context.[bezierCurveTo](#bezierCurveTo)(cp1x, cp1y, cp2x, cp2y, x, y)
+  将给定点添加到当前子路径，该子路径通过带有给定控制点的三次贝塞尔曲线与前一条路径连接。
+
+> context.[arcTo](#arcTo)(x1, y1, x2, y2, radius)
+  将具有给定控制点和半径的圆弧添加到当前子路径，并通过一条直线连接到上一个点
+  如果给定的半径为负数，则抛出`IndexSizeError`异常。
+
+> context.[arc](#arc)(x, y, radius, startAngle, endAngle [, counterclockwise(逆时针) ])
+  将点添加到子路径，以便将由自变量描述的圆的圆周描述的弧从给定的起始角度开始，以给定的终止角度终止，并沿给定方向（默认为顺时针）添加到 通过一条直线连接到上一点的路径。
+  从正x轴顺时针以弧度为单位，对应此圆的圆周的`startAngle`和`endAngle`的点。
+  如果给定的半径为负数，则抛出`IndexSizeError`异常。
+
+> context.[rect](#rect)(x, y, w, h)
+  向该路径添加一个新的闭合子路径，代表给定的矩形。
+
+  ![](./assets/arc1.png)
+
+<a id="变换"></a>
+
+## 变换（Transformations）
+
+每个`CanvasRenderingContext2D`对象都有一个当前的转换矩阵，以及操作方法（在本节中介绍）。创建`CanvasRenderingContext2D`对象时，必须将其变换矩阵初始化为恒等变换。
+
+当创建当前路径时，转换矩阵将应用于坐标，以及在`CanvasRenderingContext2D`对象上绘制文本，形状和路径时。
+
+转换必须以相反的顺序执行。
+
+> NOTE：
+context.[scale](#scale)(x, y)
+更改变换矩阵以应用具有给定特征的缩放变换。
+context.[rotate](#rotate)(angle)
+更改变换矩阵以应用具有给定特征的旋转变换。角度以弧度为单位，顺时针方向。
+context.[translate](#translate)(x, y)
+更改变换矩阵以应用具有给定特征的平移变换。
+context.[transform](#transform)(a, b, c, d, e, f)
+如下所述，更改变换矩阵以应用由参数指定的矩阵。
+用将当前变换矩阵与以下描述的矩阵相乘的结果来替换当前变换矩阵：
+context.[setTransform](#setTransform)(a, b, c, d, e, f)
+如下所述将转换矩阵更改为参数指定的矩阵。
+将当前变换重置为单位矩阵，然后使用相同的参数调用`transform（a，b，c，d，e，f）`方法。
+
+![](./assets/transform.png)
+
+<a id="t2D渲染上下文的图像源"></a>
 
 ## 2D渲染上下文的图像源
 
+此联合类型允许实现以下任何接口的对象用作图像源：
+
+* [HTMLImageElement](https://html.spec.whatwg.org/multipage/embedded-content.html#htmlimageelement)([img](https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element) elements)
+
+* [HTMLVideoElement](https://html.spec.whatwg.org/multipage/embedded-content.html#htmlvideoelement)([video](https://html.spec.whatwg.org/multipage/embedded-content.html#the-video-element) elements)
+
+* [HTMLCanvasElement](https://html.spec.whatwg.org/multipage/embedded-content.html#htmlcanvaselement)([canvas](https://html.spec.whatwg.org/multipage/embedded-content.html#the-canvas-element) elements)
+
+当需要用户代理检查 image 参数的可用性时，其中 image 是 [CanvasImageSource](https://www.w3.org/TR/2dcontext/#canvasimagesource) 对象，则用户代理必须运行以下步骤，这些步骤返回好，坏或中止：
+
+1. 如果 _image_ 参数是处于断开 [broken](https://html.spec.whatwg.org/multipage/images.html#img-error) 状态的`HTMLImageElement`对象，则引发 [InvalidStateError](https://www.w3.org/TR/WebIDL-1/#invalidstateerror) 异常，返回 _aborted_，然后终止这些步骤。
+
+2. 如果 _image_ 参数是无法完全解码 [fully decodable](https://html.spec.whatwg.org/multipage/images.html#img-good) 的`HTMLImageElement`对象，或者，如果 _image_ 参数是一个 [readyState](https://html.spec.whatwg.org/multipage/media.html#dom-media-readystate) 属性为`HAVE_NOTHING`或`HAVE_METADATA`的`HTMLVideoElement`对象，则返回 _bad_ 并中止这些步骤。
+
+3. 如果 _image_ 参数是一个`HTMLImageElement`对象，其固有宽度或固有高度（或两者）等于零，然后返回 _bad_ 并中止这些步骤。
+
+4. 如果 _image_ 参数是一个`HTMLCanvasElement`对象，其水平尺寸或垂直尺寸等于零，然后返回 _bad_ 并中止这些步骤。
+
+5. 返回 _good_。
+
+当`CanvasImageSource`对象表示`HTMLImageElement`时，必须将元素的图像用作源图像。
+
+具体来说，当`CanvasImageSource`对象表示`HTMLImageElement`中的动画图像时，用户代理必须使用动画的默认图像（当不支持或禁用动画时，将使用格式定义的图像），如果没有此类图像，则为`CanvasRenderingContext2D API`渲染图像时的第一帧。
+
+当`CanvasImageSource`对象表示`HTMLVideoElement`时，为`CanvasRenderingContext2D API`渲染图像时，在调用带有参数的方法时，当前回放位置处的帧必须用作源图像。并且源图像的尺寸必须是媒体资源的固有宽度和固有高度（即在应用任何长宽比校正之后）。
+
+当`CanvasImageSource`对象表示`HTMLCanvasElement`时，必须将元素的位图用作源图像。
+
+**The image argument is not origin-clean** 如果它是一个`HTMLImageElement`或`HTMLVideoElement`，其起源 [origin](https://html.spec.whatwg.org/multipage/browsers.html#origin-0) 与输入设置对象 [entry settings object](https://html.spec.whatwg.org/multipage/webappapis.html#entry-settings-object) 指定的起源不同，或者它是一个`HTMLCanvasElement`，其位图的`origin-clean`标志为`false`，或者它是一个`CanvasRenderingContext2D`对象，其位图的`origin-clean`标志为`false`。
+
 ## 填充和描边样式
+
+> NOTE：
+
+> context.[fillStyle](#fillStyle) [ = value ]
+返回用于填充形状的当前样式。
+可以设置，更改填充样式。
+样式可以是包含 CSS 颜色的字符串，也可以是 [CanvasGradient](https://www.w3.org/TR/2dcontext/#canvasgradient) 或[CanvasPattern](https://www.w3.org/TR/2dcontext/#canvaspattern) 对象。无效的值将被忽略。
+
+> context.[strokeStyle](#strokeStyle) [ = value ]
+返回用于描边形状的当前样式。
+可以设置，以更改描边样式。
+样式可以是包含 CSS 颜色的字符串，也可以是 [CanvasGradient](https://www.w3.org/TR/2dcontext/#canvasgradient) 或[CanvasPattern](https://www.w3.org/TR/2dcontext/#canvaspattern) 对象。无效的值将被忽略。
+
+
+如果该值是一个字符串但不能解析为`CSS <color>`值，或者既不是字符串，也不是`CanvasGradient`或`CanvasPattern`，则必须将其忽略，并且该属性必须保留其先前的值。如果新值是标记为 [not origin-clean](https://www.w3.org/TR/2dcontext/#concept-canvas-pattern-not-origin-clean) 的`CanvasPattern`对象，则位图的`origin-clean`标志必须设置为`false`。
+
+如果将其设置为`CanvasPattern`或`CanvasGradient`对象，则该赋值是动态的的，这意味着赋值后对该对象所做的更改确实会影响后续的描边或填充形状。
+
+当创建上下文时， `fillStyle`和`strokeStyle`属性初始化为字符串`＃000000`。
+
+当值是颜色时，在画布上绘制时，它一定不受变换矩阵的影响。
+
+
 
 ## 在画布上绘制矩形
 
