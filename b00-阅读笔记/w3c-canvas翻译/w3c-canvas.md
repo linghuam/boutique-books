@@ -497,7 +497,49 @@ context.[setTransform](#setTransform)(a, b, c, d, e, f)
 
 当值是颜色时，在画布上绘制时，它一定不受变换矩阵的影响。
 
+____
 
+有两种类型的渐变，`线性渐变`和`径向渐变`，均由 [CanvasGradient](https://www.w3.org/TR/2dcontext/#canvasgradient) 接口实现。
+
+创建渐变后（请参见下文），`stop`将沿着它去定义颜色如何沿渐变分布。每个停靠点的渐变颜色是为此停靠点指定的颜色。在每个这样的 stop 之间，必须在 RGBA 空间上线性内插颜色和 alpha 分量，而无需预先乘以 alpha 值即可找到要在该偏移量处使用的颜色。在第一个 stop 之前，颜色必须是第一个 stop 的颜色。最后一站之后，颜色必须是最后一站的颜色。没有停靠点时，渐变为透明黑色。
+
+> CanvasGradient：
+
+> gradient.[addColorStop](#addColorStop)(offset, color)
+将具有给定颜色的色标添加到给定偏移处的渐变中。0.0是渐变一端的偏移，1.0是另一端的偏移。
+如果偏移量超出范围，则抛出`IndexSizeError`异常。如果无法解析颜色，则引发`SyntaxError`异常。
+
+> gradient = context.[createLinearGradient](#createLinearGradient)(x0, y0, x1, y1)
+返回一个`CanvasGradient`对象，该对象表示一个线性渐变，该渐变沿着参数所表示的坐标所给出的线进行绘制。
+
+> gradient = context.[createRadialGradient](#createRadialGradient)(x0, y0, r0, x1, y1, r1)
+返回一个`CanvasGradient`对象，该对象表示一个径向渐变，该渐变沿自变量表示的圆所给定的圆锥形绘制。
+如果两个半径之一为负，则抛出`IndexSizeError`异常。
+
+`createRadialGradient（x0，y0，r0，x1，y1，r1）`方法采用六个参数，前三个代表圆心为（x0，y0）和半径为 r0 的起始圆，最后三个代表圆心为（x1，y1）和半径r1 的终点圆。这些值以坐标空间单位为单位。如果 r0 或 r1 均为负，则必须抛出`IndexSizeError`异常。否则，该方法必须返回以两个指定的圆初始化的径向`CanvasGradient`。
+
+必须按照以下步骤绘制径向渐变：
+
+1. 如果`x0 = x1`且`y0 = y1`且`r0 = r1`，则径向渐变不得绘制任何内容。终止这些步骤。
+2. 令`x(ω) = (x1 - x0)ω + x0`
+   令`y(ω) = (y1 - y0)ω + y0`
+   令`r(ω) = (r1 - r0)ω + r0`
+   令 ω 处的颜色为渐变上该位置处的颜色（颜色来自上述内插和外推）。
+3. 对于所有 ω 值，其中`r(ω）> 0`，从最接近正无穷大的 ω 值开始，到最接近负无穷大的 ω 值结束，在位置`(x(w)，y(w))`绘制半径为`r(ω)`的圆的圆周的颜色为 ω，但只能在此步骤中用于此渐变渲染的画布上尚未被较早的圆圈绘制的部分上绘制。
+
+然后，在渲染时，必须按照当前变换矩阵的描述对所得的径向渐变进行变换。
+
+仅在相关的描边或填充效果要求绘制渐变时，才必须绘制渐变。
+
+_____
+
+模式`Patterns`由实现不透明 [CanvasPattern](https://www.w3.org/TR/2dcontext/#canvaspattern) 接口的对象表示。
+
+> NOTE：
+pattern = context.[createPattern](#createPattern)(image, repetition)
+返回一个 [CanvasPattern](https://www.w3.org/TR/2dcontext/#canvaspattern) 对象，该对象使用给定的图像并在重复参数`repetition`给出的方向上重复。
+允许的重复值是`repeat`（两个方向），`repeat-x`（仅水平），`repeat-y`（仅垂直）和`no-repeat`（都不是）。如果重复参数为空，则使用重复值。
+如果图像没有图像数据，则抛出`InvalidStateError`异常。如果第二个参数不是允许的值之一，则抛出`SyntaxError`异常。如果图像尚未完全解码，则该方法返回`null`。
 
 ## 在画布上绘制矩形
 
