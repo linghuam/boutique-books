@@ -57,6 +57,7 @@ Some of the fine books I have read.
 - [《JavaScript模式》](b06-JS与NodeJS/JavaScript模式.Stoyan.Stefanov.pdf)
 - [《JavaScript+DOM编程艺术》](b06-JS与NodeJS/JavaScript+DOM编程艺术.pdf)
 - [《JavaScript高级程序设计》](b06-JS与NodeJS/JavaScript高级程序设计.pdf)
+- [《JavaScript高级程序设计》(第4版）](b06-JS与NodeJS/JavaScript高级程序设计（第4版）.pdf)
 - [《JavaScript权威指南.第六版》](b06-JS与NodeJS/JavaScript权威指南.第六版.pdf)
 - [《WebKit技术内幕.朱永盛》](b06-JS与NodeJS/WebKit技术内幕.朱永盛.pdf)
 - [《JavaScript正则表达式迷你书》](b06-JS与NodeJS/JavaScript正则表达式迷你书.pdf)
